@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Required packages:
+#   imagemagick
+#   exiftool
+#   libraw-bin
+
 #Ignore these...
 #convert -size "1824x940" -depth 16 gray:sn37758-after-all-tests.raw -define sample:offset=25    -sample 50% -set colorspace Gray C0.png
 #convert -size "1824x940" -depth 16 gray:sn37758-after-all-tests.raw -define sample:offset=75x24 -sample 50% -set colorspace Gray C1.png
@@ -9,7 +14,7 @@
 # This script makes assumptions about the color filter array used in the sensor. Make adjustments as necessary.
 
 #Arguments:
-#           $1 = width 
+#           $1 = width
 #           $2 = height
 #           $3 = bits per sample
 #           $4 = filename
@@ -30,10 +35,10 @@ exiftool \
 
 rm .tmp-gray.tiff
 
-dcraw -T .tmp.dng
+/usr/lib/libraw/dcraw_emu -dcbe -f -mmap -a -o 1 -T .tmp.dng
 
 rm .tmp.dng
 
-convert .tmp.tiff $4.png
+convert .tmp.dng.tiff $4.png
 
-rm .tmp.tiff
+rm .tmp.dng.tiff
